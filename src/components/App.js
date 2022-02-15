@@ -20,8 +20,6 @@ import * as auth from '../auth.js';
 function App() {
   const [currentUser, setCurrentUser] = useState({});
 
-  console.log(currentUser);
-
   const [currentEmail, setCurrentEmail] = useState('');
   
   const [isRegisterResult, setIsRegisterResult] = useState('');
@@ -140,12 +138,22 @@ function App() {
       });
   }
 
-  function handleLogin() {
-    setLoggedIn(true);
+  function handleLogin(token) {
+    auth.getContent(token).then((res) => {
+      if(res){
+        setCurrentEmail(res.data.email);
+        // авторизуем пользователя
+        setLoggedIn(true);
+        history.push('/');
+      }
+    });
   }
 
   function handleLogOut() {
     setLoggedIn(false);
+    localStorage.removeItem('token');
+    history.push('/sign-in');
+    setCurrentEmail('');
   }
 
   function tokenCheck() {
@@ -154,9 +162,6 @@ function App() {
       if(token) {
         auth.getContent(token).then((res) => {
           if (res){
-            console.log(token);
-            console.log(res);
-
             setCurrentEmail(res.data.email);
             // авторизуем пользователя
             setLoggedIn(true);
@@ -169,7 +174,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header email={currentEmail} />
+      <Header email={currentEmail} handleLogOut={handleLogOut} />
 
       <div className="popup popup_type_info-tooltip">
         <div className="popup__container">Вы успешно зарегистрировались!</div>

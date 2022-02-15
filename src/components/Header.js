@@ -1,31 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-function Header({email}) {
-
-  console.log(email);
-
-  const [currEmail, setCurrEmail] = useState('');
-
-  const history = useHistory();
-
-  function signOut(){    
-    setCurrEmail('');
-    localStorage.removeItem('token');
-    history.push('/sign-in');
-  }
-
-  useEffect(() => {
-    setCurrEmail(email);
-  }, [email]);
+function Header({email, handleLogOut}) {
 
   return (
     <header className="header root__container">
       <div className="header__logo"></div>
       <div className="header__auth">
-        {currEmail ? currEmail : ""}
-        {currEmail ? (
-          <Link onClick={signOut} className="header__link header__link_opacity" to="#">
+        {email ? email : ""}
+        {email ? (
+          <Link onClick={handleLogOut} className="header__link header__link_opacity" to="#">
             Выйти
           </Link>
         ) : (

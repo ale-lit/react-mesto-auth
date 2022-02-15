@@ -24,10 +24,10 @@ function Login({handleLogin, onError}) {
     }
     auth.authorize(email, password)
       .then((data) => {
-        if (data.token){
+        if(data.token){
           setEmail('');
           setPassword('');
-          handleLogin();
+          handleLogin(data.token);
           history.push('/');
         }  
       })
