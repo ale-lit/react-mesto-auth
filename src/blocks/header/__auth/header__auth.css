@@ -1,0 +1,5 @@
+.header__auth {
+  padding-top: 7px;
+  display: flex;
+  gap: 24px;
+}
