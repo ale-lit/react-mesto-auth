@@ -188,8 +188,8 @@ function App() {
           setTimeout(redirectToLogin, 3000);
         } else {
           handleInfoTooltipPopupOpen("fail");
+          setIsLoading(false);
         }
-        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -217,6 +217,7 @@ function App() {
 
   function redirectToLogin() {
     closeAllPopups();
+    setIsLoading(false);
     history.push("/sign-in");
   }
 
