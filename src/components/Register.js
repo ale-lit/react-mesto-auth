@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import * as auth from '../auth.js';
+import { Link } from 'react-router-dom';
 
-function Register({onSubmitForm, onClosePopup}) {
+function Register({onRegisterUser}) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const history = useHistory(); 
   
   function handleEmailChange(e) {
     setEmail(e.target.value);
@@ -17,21 +14,12 @@ function Register({onSubmitForm, onClosePopup}) {
     setPassword(e.target.value);
   }
 
-  function redirectToLogin() {
-    onClosePopup();
-    history.push('/sign-in');
-  }
-
   function handleSubmit(e) {
     e.preventDefault();
-    auth.register(password, email).then((res) => {
-      if(res){
-        onSubmitForm('success');
-        setTimeout(redirectToLogin, 3000);
-      } else {
-        onSubmitForm('fail');
-      };
-    })
+    onRegisterUser({
+      email,
+      password
+    });
   }
 
   return (

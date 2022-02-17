@@ -15,12 +15,14 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltipPopup from "./InfoTooltipPopup";
-import * as auth from '../auth.js';
+import * as auth from '../utils/auth.js';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
 
   const [currentEmail, setCurrentEmail] = useState('');
+
+  const [currPath, setCurrPath] = useState('');
   
   const [isRegisterResult, setIsRegisterResult] = useState('');
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
@@ -92,7 +94,7 @@ function App() {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    tokenCheck();
+    checkToken();
     api.getAllNeededData()
       .then(([cards, user]) => {
         setCurrentUser(user);
@@ -146,6 +148,8 @@ function App() {
         setLoggedIn(true);
         history.push('/');
       }
+    }).catch((err) => {
+      console.log(err);
     });
   }
 
@@ -156,50 +160,76 @@ function App() {
     setCurrentEmail('');
   }
 
-  function tokenCheck() {
-    if (localStorage.getItem('token')){
+  function checkToken() {
+    if(localStorage.getItem('token')) {
       const token = localStorage.getItem('token');
       if(token) {
-        auth.getContent(token).then((res) => {
-          if (res){
-            setCurrentEmail(res.data.email);
-            // авторизуем пользователя
-            setLoggedIn(true);
-            history.push('/');
-          }
-        }); 
+        handleLogin(token);
       }
     }
+  }  
+
+  function handleRegisterUser(newUser) {
+    auth.register(newUser.password, newUser.email).then((res) => {
+      if(res){
+        handleInfoTooltipPopupOpen('success');
+        setTimeout(redirectToLogin, 3000);
+      } else {
+        handleInfoTooltipPopupOpen('fail');
+      };
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  function handleLoginUser(user) {
+    auth.authorize(user.email, user.password)
+      .then((data) => {
+        if(data.token){
+          handleLogin(data.token);
+          history.push('/');
+        }  
+      })
+      .catch(() => { // запускается, если пользователь не найден
+        handleInfoTooltipPopupOpen('fail');
+      });
+  }
+  
+  function redirectToLogin() {
+    closeAllPopups();
+    history.push('/sign-in');
+  }
+
+  function checkPath() {
+    // setCurrPath(document.location.pathname);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header email={currentEmail} handleLogOut={handleLogOut} />
-
-      <div className="popup popup_type_info-tooltip">
-        <div className="popup__container">Вы успешно зарегистрировались!</div>
-      </div> 
-      
-      <Switch>
-        <Route path="/sign-up">
-          <Register onSubmitForm={handleInfoTooltipPopupOpen} onClosePopup={closeAllPopups} />
-        </Route>
-        <Route path="/sign-in">
-          <Login handleLogin={handleLogin} onError={handleInfoTooltipPopupOpen} />
-        </Route>
-        <ProtectedRoute
-          path="/"
-          loggedIn={loggedIn}
-          component={Main}
-          onCardClick={handleCardClick}
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
-      </Switch>
+      <main>
+        <Header email={currentEmail} handleLogOut={handleLogOut} />
+        
+        <Switch>
+          <Route path="/sign-up">
+            <Register onRegisterUser={handleRegisterUser} />
+          </Route>
+          <Route path="/sign-in">
+            <Login onLoginUser={handleLoginUser} />
+          </Route>
+          <ProtectedRoute
+            path="/"
+            loggedIn={loggedIn}
+            component={Main}
+            onCardClick={handleCardClick}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
+        </Switch>
+      </main>
 
       <Footer />      
 

@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import * as auth from '../auth.js';
 
-function Login({handleLogin, onError}) {
+function Login({onLoginUser}) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const history = useHistory();
 
   function handleEmailChange(e) {
     setEmail(e.target.value);
@@ -21,19 +17,13 @@ function Login({handleLogin, onError}) {
     e.preventDefault();
     if (!email || !password){
       return;
-    }
-    auth.authorize(email, password)
-      .then((data) => {
-        if(data.token){
-          setEmail('');
-          setPassword('');
-          handleLogin(data.token);
-          history.push('/');
-        }  
-      })
-      .catch(() => { // запускается, если пользователь не найден
-        onError('fail');
-      });
+    }    
+    onLoginUser({
+      email,
+      password
+    });
+    setEmail('');
+    setPassword('');
   }
 
   return (
