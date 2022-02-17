@@ -22,8 +22,6 @@ function App() {
 
   const [currentEmail, setCurrentEmail] = useState("");
 
-  const [currPath, setCurrPath] = useState("");
-
   const [isRegisterResult, setIsRegisterResult] = useState("");
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
 
