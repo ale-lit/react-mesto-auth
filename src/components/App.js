@@ -15,12 +15,15 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltipPopup from "./InfoTooltipPopup";
+import Loader from "./Loader";
 import * as auth from "../utils/auth.js";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
 
   const [currentEmail, setCurrentEmail] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [isRegisterResult, setIsRegisterResult] = useState("");
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
@@ -176,6 +179,7 @@ function App() {
   }
 
   function handleRegisterUser(newUser) {
+    setIsLoading(true);
     auth
       .register(newUser.password, newUser.email)
       .then((res) => {
@@ -185,13 +189,16 @@ function App() {
         } else {
           handleInfoTooltipPopupOpen("fail");
         }
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   }
 
   function handleLoginUser(user) {
+    setIsLoading(true);
     auth
       .authorize(user.email, user.password)
       .then((data) => {
@@ -199,10 +206,12 @@ function App() {
           handleLogin(data.token);
           history.push("/");
         }
+        setIsLoading(false);
       })
       .catch(() => {
         // запускается, если пользователь не найден
         handleInfoTooltipPopupOpen("fail");
+        setIsLoading(false);
       });
   }
 
@@ -222,10 +231,18 @@ function App() {
 
         <Switch>
           <Route path="/sign-up">
-            <Register onRegisterUser={handleRegisterUser} />
+            {
+              isLoading
+                ? <Loader />
+                : <Register onRegisterUser={handleRegisterUser} />
+            }
           </Route>
           <Route path="/sign-in">
-            <Login onLoginUser={handleLoginUser} />
+            {
+              isLoading
+                ? <Loader />
+                : <Login onLoginUser={handleLoginUser} />
+            }
           </Route>
           <ProtectedRoute
             path="/"
