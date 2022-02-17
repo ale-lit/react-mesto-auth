@@ -7,3 +7,9 @@
   padding-bottom: 0;
   gap: 32px;
 }
+@media screen and (max-width: 450px) {
+  .popup__container_type_info-tooltip {
+    height: 323px;
+    padding-top: 50px;
+  }
+}

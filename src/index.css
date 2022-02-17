@@ -9,7 +9,13 @@
 @import url('./blocks/header/header.css');
 @import url('./blocks/header/__logo/header__logo.css');
 @import url('./blocks/header/__logo/_theme/header__logo_theme_light.css');
+@import url('./blocks/header/__logo/_compact/header__logo_compact.css');
+@import url('./blocks/header/__logo-block/header__logo-block.css');
+@import url('./blocks/header/__menu-button/header__menu-button.css');
+@import url('./blocks/header/__menu-button/_type/header__menu-button_type_close.css');
+@import url('./blocks/header/__menu-button/_type/header__menu-button_type_open.css');
 @import url('./blocks/header/__auth/header__auth.css');
+@import url('./blocks/header/__auth/_visible/header__auth_visible.css');
 @import url('./blocks/header/__link/header__link.css');
 @import url('./blocks/header/__link/_opacity/header__link_opacity.css');
 

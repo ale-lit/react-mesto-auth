@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-function Login({onLoginUser}) {
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function Login({ onLoginUser }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function handleEmailChange(e) {
     setEmail(e.target.value);
@@ -15,23 +14,39 @@ function Login({onLoginUser}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!email || !password){
+    if (!email || !password) {
       return;
-    }    
+    }
     onLoginUser({
       email,
-      password
+      password,
     });
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
   }
 
   return (
-    <form onSubmit={handleSubmit} className="auth">  
+    <form onSubmit={handleSubmit} className="auth">
       <h1 className="auth__title">Вход</h1>
-      <input type="email" className="auth__input" placeholder="Email" value={email || ''} onChange={handleEmailChange} required />
-      <input type="password" className="auth__input" placeholder="Пароль" value={password || ''} onChange={handlePasswordChange} required />
-      <button type="submit" className="auth__submit">Войти</button>
+      <input
+        type="email"
+        className="auth__input"
+        placeholder="Email"
+        value={email || ""}
+        onChange={handleEmailChange}
+        required
+      />
+      <input
+        type="password"
+        className="auth__input"
+        placeholder="Пароль"
+        value={password || ""}
+        onChange={handlePasswordChange}
+        required
+      />
+      <button type="submit" className="auth__submit">
+        Войти
+      </button>
     </form>
   );
 }

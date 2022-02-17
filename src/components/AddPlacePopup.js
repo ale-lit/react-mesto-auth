@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 function AddPlacePopup({ onClose, isOpen, onAddPlace }) {
-  const [name, setName] = useState('');
-  const [link, setLink] = useState('');
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -23,8 +23,8 @@ function AddPlacePopup({ onClose, isOpen, onAddPlace }) {
   }
 
   useEffect(() => {
-    setName('');
-    setLink('');
+    setName("");
+    setLink("");
   }, [isOpen]);
 
   return (
@@ -45,7 +45,7 @@ function AddPlacePopup({ onClose, isOpen, onAddPlace }) {
           className="popup__input"
           minLength="2"
           maxLength="30"
-          value={name || ''}
+          value={name || ""}
           required
         />
         <span id="input-place-name-error" className="popup__input-error"></span>
@@ -59,7 +59,7 @@ function AddPlacePopup({ onClose, isOpen, onAddPlace }) {
           name="link"
           id="input-image-source"
           className="popup__input"
-          value={link || ''}
+          value={link || ""}
           required
         />
         <span

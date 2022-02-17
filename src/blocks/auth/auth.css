@@ -5,3 +5,9 @@
   padding: 43px 0;
   gap: 28px;
 }
+@media screen and (max-width: 450px) {
+  .auth {
+    padding: 26px 30px;
+    gap: 23px;
+  }
+}

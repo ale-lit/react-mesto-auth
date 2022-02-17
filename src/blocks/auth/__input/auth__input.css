@@ -13,3 +13,8 @@
 .auth__input:focus {
   border-color: #fff;
 }
+@media screen and (max-width: 450px) {
+  .auth__input {
+    width: 100%;
+  }
+}
