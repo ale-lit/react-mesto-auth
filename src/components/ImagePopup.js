@@ -1,7 +1,7 @@
 function ImagePopup({ card, onClose }) {
   return (
     <div
-      className={`popup popup_type_image-preview${card._id && " popup_opened"}`}
+      className={`popup popup_type_image-preview${card._id ? ' popup_opened' : ''}`}
     >
       <div className="popup__container popup__container_type_image-preview">
         <figure className="popup__figure">
