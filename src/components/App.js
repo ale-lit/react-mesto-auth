@@ -188,11 +188,12 @@ function App() {
           setTimeout(redirectToLogin, 3000);
         } else {
           handleInfoTooltipPopupOpen("fail");
-          setIsLoading(false);
         }
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }
@@ -206,23 +207,19 @@ function App() {
           handleLogin(data.token);
           history.push("/");
         }
-        setIsLoading(false);
       })
       .catch(() => {
         // запускается, если пользователь не найден
         handleInfoTooltipPopupOpen("fail");
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }
 
   function redirectToLogin() {
     closeAllPopups();
-    setIsLoading(false);
     history.push("/sign-in");
-  }
-
-  function checkPath() {
-    // setCurrPath(document.location.pathname);
   }
 
   return (
